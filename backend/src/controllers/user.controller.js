@@ -14,7 +14,7 @@ const register = async (req, res) => {
         }
         const existUser = await User.findOne({ username })
         if (existUser) {
-            return res.status(400).json({ message: "User already exists" })
+            return res.status(400).json({ message: "User exists" })
         }
         const hashedPass = await bcrypt.hash(password, 10);
         const user = await User.create({
@@ -28,7 +28,7 @@ const register = async (req, res) => {
         return res.status(201).json({ message: "User created successfully" })
     } catch (error) {
         console.log("Registration error:", error);
-        return res.status(500).json({ message: "Internal server error", error: error.message })
+        return res.status(500).json({ message: "Internal server error" })
     }
 }
 
@@ -53,7 +53,7 @@ const login = async (req, res) => {
         const token = crypto.randomBytes(32).toString("hex");
         user.token = token;
         await user.save();
-        return res.status(200).json({ token: token })
+        return res.status(200).json({ token: token, message: "Login successful" })
     } catch (error) {
         console.log("Login error:", error);
         return res.status(500).json({ message: "Internal server error", error: error.message })

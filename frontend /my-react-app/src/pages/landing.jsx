@@ -23,13 +23,13 @@ function LandingPage() {
           <p>Connect Far in Seconds</p>
 
           <div role='button' className='getStarted'>
-            <Link to="/home">Get Started</Link>
+            <Link to="/auth">Get Started</Link>
           </div>
 
         </div>
 
         <div className='mobileSecondary'>
-          <img src="/img2.jpg" alt="Img" />
+          <img src="/pp.png" alt="Img" />
         </div>
       </div>
     </div>

@@ -1,0 +1,105 @@
+/* CSS Variables for Authenticaion Page */
+:root {
+    --brand-50: hsl(210, 100%, 95%);
+    --brand-100: hsl(210, 100%, 92%);
+    --brand-200: hsl(210, 100%, 80%);
+    --brand-300: hsl(210, 100%, 65%);
+    --brand-400: hsl(210, 98%, 48%);
+    --brand-500: hsl(210, 98%, 42%);
+    --brand-600: hsl(210, 98%, 55%);
+    --brand-700: hsl(210, 100%, 35%);
+    --brand-800: hsl(210, 100%, 16%);
+    --brand-900: hsl(210, 100%, 21%);
+
+    --gray-50: hsl(220, 35%, 97%);
+    --gray-100: hsl(220, 30%, 94%);
+    --gray-200: hsl(220, 20%, 88%);
+    --gray-300: hsl(220, 20%, 80%);
+    --gray-400: hsl(220, 20%, 65%);
+    --gray-500: hsl(220, 20%, 42%);
+    --gray-600: hsl(220, 20%, 35%);
+    --gray-700: hsl(220, 20%, 25%);
+    --gray-800: hsl(220, 30%, 6%);
+    --gray-900: hsl(220, 35%, 3%);
+
+    --green-50: hsl(120, 80%, 98%);
+    --green-100: hsl(120, 75%, 94%);
+    --green-200: hsl(120, 75%, 87%);
+    --green-300: hsl(120, 61%, 77%);
+    --green-400: hsl(120, 44%, 53%);
+    --green-500: hsl(120, 59%, 30%);
+    --green-600: hsl(120, 70%, 25%);
+    --green-700: hsl(120, 75%, 16%);
+    --green-800: hsl(120, 84%, 10%);
+    --green-900: hsl(120, 87%, 6%);
+
+    --orange-50: hsl(45, 100%, 97%);
+    --orange-100: hsl(45, 92%, 90%);
+    --orange-200: hsl(45, 94%, 80%);
+    --orange-300: hsl(45, 90%, 65%);
+    --orange-400: hsl(45, 90%, 40%);
+    --orange-500: hsl(45, 90%, 35%);
+    --orange-600: hsl(45, 91%, 25%);
+    --orange-700: hsl(45, 94%, 20%);
+    --orange-800: hsl(45, 95%, 16%);
+    --orange-900: hsl(45, 93%, 12%);
+
+    --red-50: hsl(0, 100%, 97%);
+    --red-100: hsl(0, 92%, 90%);
+    --red-200: hsl(0, 94%, 80%);
+    --red-300: hsl(0, 90%, 65%);
+    --red-400: hsl(0, 90%, 40%);
+    --red-500: hsl(0, 90%, 30%);
+    --red-600: hsl(0, 91%, 25%);
+    --red-700: hsl(0, 94%, 18%);
+    --red-800: hsl(0, 95%, 12%);
+    --red-900: hsl(0, 93%, 6%);
+
+    --bg-gradient: radial-gradient(ellipse at 50% 50%, hsl(210, 100%, 97%), hsl(0, 0%, 100%));
+}
+
+[data-mui-color-scheme='dark'] {
+    --bg-gradient: radial-gradient(at 50% 50%, hsla(210, 100%, 16%, 0.5), hsl(220, 30%, 5%));
+}
+
+.auth-main-container {
+    min-height: 100vh;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.auth-main-container::before {
+    content: "";
+    display: block;
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+    background-image: var(--bg-gradient);
+    background-repeat: no-repeat;
+}
+
+.auth-card {
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+    width: 100%;
+    padding: 32px;
+    /* theme.spacing(4) */
+    gap: 16px;
+    /* theme.spacing(2) */
+    box-shadow: hsla(220, 30%, 5%, 0.05) 0px 5px 15px 0px, hsla(220, 25%, 10%, 0.05) 0px 15px 35px -5px;
+    background-color: var(--gray-50);
+}
+
+@media (min-width: 600px) {
+    .auth-card {
+        width: 450px;
+    }
+}
+
+[data-mui-color-scheme='dark'] .auth-card {
+    box-shadow: hsla(220, 30%, 5%, 0.5) 0px 5px 15px 0px, hsla(220, 25%, 10%, 0.08) 0px 15px 35px -5px;
+    background-color: hsl(220, 30%, 7%);
+}

@@ -1,0 +1,53 @@
+import {User} from "../models/user.model.js";
+import bcrypt,{hash} from "bcrypt";
+
+const register=async(req,res)=>{
+    try {
+        const {name,username,password}=req.body;
+        if(!name || !username || !password){
+            return res.status(400).json({message:"All fields are required"})
+        }
+        const existUser=await User.findOne({username})
+        if(existUser){
+            return res.status(400).json({message:"User already exists"})
+        }
+        const hashedPass=await bcrypt.hash(password,10);    
+        const user=await User.create({
+            name:name,
+            username:username,
+            password:hashedPass
+        })
+
+        await user.save();
+
+        return res.status(201).json({message:"User created successfully"})
+    } catch (error) {
+        return res.status(500).json({message:"Internal server error",error})
+    }
+}
+
+const login=async(req,res)=>{
+    try {
+        const {username,password}=req.body;
+        if(!username || !password){
+            return res.status(400).json({message:"All fields are required"})
+        }
+        const user=await User.findOne({username})
+        if(!user){
+            return res.status(400).json({message:"User not found"})
+        }
+        const isPasswordValid=await bcrypt.compare(password,user.password)
+        if(!isPasswordValid){
+            return res.status(400).json({message:"Invalid password"})
+        }
+        const token=crypto.randomBytes(32).toString("hex");
+        user.token=token;
+        await user.save();
+        return res.status(200).json({token:token})
+    } catch (error) {
+        return res.status(500).json({message:"Internal server error",error})
+    }
+}
+
+
+export {register,login}

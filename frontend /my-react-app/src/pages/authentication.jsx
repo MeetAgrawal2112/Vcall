@@ -30,20 +30,20 @@ const darkTheme = createTheme({
     palette: {
         mode: 'dark',
         primary: {
-            main: '#3b82f6', // Bright Blue
-            light: '#60a5fa',
-            dark: '#2563eb',
+            main: '#ee4318', // Brand Orange
+            light: '#ff7b54',
+            dark: '#c4320f',
             contrastText: '#fff',
         },
         secondary: {
-            main: '#10b981', // Emerald Green
+            main: '#10b981', // Emerald Green (keeping for success states)
             light: '#34d399',
             dark: '#059669',
             contrastText: '#fff',
         },
         background: {
-            default: '#0f172a', // Slate 900
-            paper: '#1e293b', // Slate 800
+            default: '#1c1e21', // Dark Gray (matching Home)
+            paper: '#2b2b2b', // Slightly lighter for cards
         },
         text: {
             primary: '#f8fafc',
@@ -72,8 +72,8 @@ const darkTheme = createTheme({
                     fontSize: '1rem',
                 },
                 containedPrimary: {
-                    background: 'linear-gradient(45deg, #2563eb 30%, #3b82f6 90%)',
-                    boxShadow: '0 3px 5px 2px rgba(37, 99, 235, .3)',
+                    background: 'linear-gradient(45deg, #ee4318 30%, #ff7b54 90%)',
+                    boxShadow: '0 3px 5px 2px rgba(238, 67, 24, .3)',
                 },
             },
         },
@@ -89,7 +89,7 @@ const darkTheme = createTheme({
                             borderColor: 'rgba(255, 255, 255, 0.2)',
                         },
                         '&.Mui-focused fieldset': {
-                            borderColor: '#3b82f6',
+                            borderColor: '#ee4318',
                         },
                     },
                 },
@@ -199,7 +199,7 @@ export default function Authentication() {
                             left: 0,
                             right: 0,
                             bottom: 0,
-                            background: 'linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(15, 23, 42, 0.7) 100%)',
+                            background: 'linear-gradient(135deg, rgba(28, 30, 33, 0.9) 0%, rgba(28, 30, 33, 0.7) 100%)',
                             zIndex: 1
                         }
                     }}
@@ -217,7 +217,7 @@ export default function Authentication() {
                             <Typography variant="overline" sx={{ letterSpacing: 2, color: 'secondary.main', fontWeight: 700 }}>
                                 CONNECT • COLLABORATE • CREATE
                             </Typography>
-                            <Typography variant="h2" component="h1" sx={{ fontWeight: 800, mt: 1, mb: 2, background: 'linear-gradient(45deg, #fff 30%, #94a3b8 90%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+                            <Typography variant="h2" component="h1" sx={{ fontWeight: 800, mt: 1, mb: 2, background: 'linear-gradient(45deg, #fff 30%, #ee4318 90%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
                                 V Call
                             </Typography>
                             <Typography variant="h5" sx={{ color: 'text.secondary', fontWeight: 400, lineHeight: 1.6 }}>
@@ -239,7 +239,7 @@ export default function Authentication() {
                                             backgroundColor: 'rgba(255,255,255,0.06)'
                                         }
                                     }}>
-                                        <Box sx={{ display: 'flex', alignItems: 'center', mb: 1, color: 'primary.light' }}>
+                                        <Box sx={{ display: 'flex', alignItems: 'center', mb: 1, color: 'primary.main' }}>
                                             {item.icon}
                                             <Typography variant="h6" sx={{ ml: 1.5, fontSize: '1rem' }}>
                                                 {item.title}
@@ -277,7 +277,7 @@ export default function Authentication() {
                             maxWidth: 450,
                             p: 4,
                             borderRadius: 4,
-                            backgroundColor: { xs: 'transparent', sm: 'rgba(30, 41, 59, 0.5)' }, // Subtle card on desktop
+                            backgroundColor: { xs: 'transparent', sm: 'rgba(43, 43, 43, 0.5)' }, // Subtle card on desktop
                             backdropFilter: { sm: 'blur(10px)' },
                             border: { sm: '1px solid rgba(255,255,255,0.05)' }
                         }}
@@ -287,7 +287,7 @@ export default function Authentication() {
                             bgcolor: 'primary.main',
                             width: 56,
                             height: 56,
-                            boxShadow: '0 0 20px rgba(37, 99, 235, 0.5)'
+                            boxShadow: '0 0 20px rgba(238, 67, 24, 0.5)'
                         }}>
                             <LockOutlinedIcon fontSize="large" />
                         </Avatar>

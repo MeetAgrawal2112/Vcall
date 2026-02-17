@@ -2,7 +2,7 @@
     width: 100vw;
     height: 100vh;
     background-color: #000;
-    background-image: url('/img3.jpg');
+    background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('/img3.jpg');
     background-repeat: no-repeat;
     background-size: cover;
     color: white;

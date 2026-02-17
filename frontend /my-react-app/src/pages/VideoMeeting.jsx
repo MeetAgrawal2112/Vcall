@@ -23,7 +23,9 @@ const peerConfigConnections = {
     ]
 }
 
-export default function VideoMeetComponent() {
+import withAuth from '../utils/Auth';
+
+function VideoMeetComponent() {
 
     var socketRef = useRef();
     let socketIdRef = useRef();
@@ -34,9 +36,9 @@ export default function VideoMeetComponent() {
 
     let [audioAvailable, setAudioAvailable] = useState(true);
 
-    let [video, setVideo] = useState([]);
+    let [video, setVideo] = useState(false);
 
-    let [audio, setAudio] = useState();
+    let [audio, setAudio] = useState(false);
 
     let [screen, setScreen] = useState();
 
@@ -68,7 +70,7 @@ export default function VideoMeetComponent() {
         console.log("HELLO")
         getPermissions();
 
-    })
+    }, [])
 
     let getDislayMedia = () => {
         if (screen) {
@@ -76,7 +78,11 @@ export default function VideoMeetComponent() {
                 navigator.mediaDevices.getDisplayMedia({ video: true, audio: true })
                     .then(getDislayMediaSuccess)
                     .then((stream) => { })
-                    .catch((e) => console.log(e))
+                    .catch((e) => {
+                        console.log(e);
+                        // User canceled picker or browser rejected share request.
+                        setScreen(false);
+                    })
             }
         }
     }
@@ -84,8 +90,10 @@ export default function VideoMeetComponent() {
     const getPermissions = async () => {
         try {
             const videoPermission = await navigator.mediaDevices.getUserMedia({ video: true });
-            if (videoPermission) {
+            const hasVideoPermission = !!videoPermission;
+            if (hasVideoPermission) {
                 setVideoAvailable(true);
+                videoPermission.getTracks().forEach((track) => track.stop());
                 console.log('Video permission granted');
             } else {
                 setVideoAvailable(false);
@@ -93,8 +101,10 @@ export default function VideoMeetComponent() {
             }
 
             const audioPermission = await navigator.mediaDevices.getUserMedia({ audio: true });
-            if (audioPermission) {
+            const hasAudioPermission = !!audioPermission;
+            if (hasAudioPermission) {
                 setAudioAvailable(true);
+                audioPermission.getTracks().forEach((track) => track.stop());
                 console.log('Audio permission granted');
             } else {
                 setAudioAvailable(false);
@@ -107,8 +117,8 @@ export default function VideoMeetComponent() {
                 setScreenAvailable(false);
             }
 
-            if (videoAvailable || audioAvailable) {
-                const userMediaStream = await navigator.mediaDevices.getUserMedia({ video: videoAvailable, audio: audioAvailable });
+            if (hasVideoPermission || hasAudioPermission) {
+                const userMediaStream = await navigator.mediaDevices.getUserMedia({ video: hasVideoPermission, audio: hasAudioPermission });
                 if (userMediaStream) {
                     window.localStream = userMediaStream;
                     if (localVideoref.current) {
@@ -246,6 +256,19 @@ export default function VideoMeetComponent() {
             getUserMedia()
 
         })
+    }
+
+    let stopScreenSharing = () => {
+        try {
+            if (window.localStream) {
+                window.localStream.getTracks().forEach((track) => track.stop());
+            }
+        } catch (e) {
+            console.log(e);
+        }
+
+        setScreen(false);
+        getUserMedia();
     }
 
     let gotMessageFromServer = (fromId, message) => {
@@ -392,12 +415,16 @@ export default function VideoMeetComponent() {
     }
 
     useEffect(() => {
-        if (screen !== undefined) {
+        if (screen) {
             getDislayMedia();
         }
     }, [screen])
     let handleScreen = () => {
-        setScreen(!screen);
+        if (screen) {
+            stopScreenSharing();
+            return;
+        }
+        setScreen(true);
     }
 
     let handleEndCall = () => {
@@ -512,7 +539,7 @@ export default function VideoMeetComponent() {
 
                         {screenAvailable === true ?
                             <IconButton onClick={handleScreen} style={{ color: "white" }}>
-                                {screen === true ? <ScreenShareIcon /> : <StopScreenShareIcon />}
+                                {screen === true ? <StopScreenShareIcon /> : <ScreenShareIcon />}
                             </IconButton> : <></>}
 
                         <Badge badgeContent={newMessages} max={999} color='orange'>
@@ -552,3 +579,5 @@ export default function VideoMeetComponent() {
         </div>
     )
 }
+
+export default withAuth(VideoMeetComponent);

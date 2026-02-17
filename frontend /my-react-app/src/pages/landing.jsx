@@ -1,35 +1,69 @@
 import React from 'react'
-import '../App.css'
-import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
+import { Button } from '@mui/material'
+import styles from './home.module.css'
+
 function LandingPage() {
+  const navigate = useNavigate();
+
+  React.useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      navigate("/home");
+    }
+  }, [])
+
+  const handleAction = () => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      navigate("/home");
+    } else {
+      navigate("/auth");
+    }
+  }
+
   return (
-    <div className='LandingPageContainer'>
-      <nav> 
-        <div className='navLeft'>
-          <h2>V Call</h2>
+    <div className={styles.homeContainer}>
+      <div className={styles.navBar}>
+        <div className={styles.logo}>
+          <h3>V Call</h3>
         </div>
-        <div className='navRight'>
-          <p>Join As Guest</p>
-          <p>Register</p>
-          <div role='button'>
-            Sign In
+        <div className={styles.navActions}>
+          <Button
+            className={styles.navButton}
+            onClick={handleAction}
+          >
+            Register
+          </Button>
+          <Button
+            className={styles.joinButton}
+            onClick={handleAction}
+            style={{ height: '40px' }}
+          >
+            Login
+          </Button>
+        </div>
+      </div>
+
+      <div className={styles.container}>
+        <div className={styles.leftSide}>
+          <div className={styles.heroContent}>
+            <h2>Connect With Your Loved Ones.</h2>
+            <p>Experience the future of secure, high-quality video meetings. Fast, reliable, and available for everyone, anywhere.</p>
+
+            <div className={styles.inputGroup}>
+              <Button
+                className={styles.joinButton}
+                onClick={handleAction}
+                style={{ padding: '0.8rem 3rem' }}
+              >
+                Get Started
+              </Button>
+            </div>
           </div>
         </div>
-      </nav>
-
-      <div className="Hero">
-        <div className='heroText'>
-          <h1><span style={{ color: "#ff9999" }}>Connect</span> With The Loved Ones</h1>
-          <p>Connect Far in Seconds</p>
-
-          <div role='button' className='getStarted'>
-            <Link to="/auth">Get Started</Link>
-          </div>
-
-        </div>
-
-        <div className='mobileSecondary'>
-          <img src="/pp.png" alt="Img" />
+        <div className={styles.rightSide}>
+          <img src="/pp.png" alt="Video Call Illustration" />
         </div>
       </div>
     </div>

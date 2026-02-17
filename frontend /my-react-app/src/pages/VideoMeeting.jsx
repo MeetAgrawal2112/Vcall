@@ -60,6 +60,16 @@ function VideoMeetComponent() {
 
     let [videos, setVideos] = useState([])
 
+    const messagesEndRef = useRef(null);
+
+    const scrollToBottom = () => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    };
+
+    useEffect(() => {
+        scrollToBottom();
+    }, [messages]);
+
     // TODO
     // if(isChrome() === false) {
 
@@ -447,6 +457,7 @@ function VideoMeetComponent() {
     }
 
     const addMessage = (data, sender, socketIdSender) => {
+        console.log("Adding message:", data, "from", sender);
         setMessages((prevMessages) => [
             ...prevMessages,
             { sender: sender, data: data }
@@ -459,11 +470,10 @@ function VideoMeetComponent() {
 
 
     let sendMessage = () => {
-        console.log(socketRef.current);
+        console.log("Sending message:", message);
         socketRef.current.emit('chat-message', message, username)
+        addMessage(message, username, socketIdRef.current)
         setMessage("");
-
-        // this.setState({ message: "", sender: username })
     }
 
 
@@ -478,18 +488,29 @@ function VideoMeetComponent() {
 
             {askForUsername === true ?
 
-                <div>
-
-
-                    <h2>Enter into Lobby </h2>
-                    <TextField id="outlined-basic" label="Username" value={username} onChange={e => setUsername(e.target.value)} variant="outlined" />
-                    <Button variant="contained" onClick={connect}>Connect</Button>
-
-
-                    <div>
-                        <video ref={localVideoref} autoPlay muted></video>
+                <div className={styles.lobbyContainer}>
+                    <div className={styles.lobbyCard}>
+                        <h2>Join Meeting Room</h2>
+                        <div className={styles.lobbyVideoContainer}>
+                            <video ref={localVideoref} autoPlay muted></video>
+                        </div>
+                        <TextField
+                            className={styles.lobbyInput}
+                            label="What's your name?"
+                            value={username}
+                            onChange={e => setUsername(e.target.value)}
+                            variant="outlined"
+                            fullWidth
+                        />
+                        <Button
+                            className={styles.lobbyButton}
+                            variant="contained"
+                            onClick={connect}
+                            disabled={!username}
+                        >
+                            Connect to Meeting
+                        </Button>
                     </div>
-
                 </div> :
 
 
@@ -498,30 +519,35 @@ function VideoMeetComponent() {
                     {showModal ? <div className={styles.chatRoom}>
 
                         <div className={styles.chatContainer}>
-                            <h1>Chat</h1>
+                            <h1>Live Chat</h1>
 
                             <div className={styles.chattingDisplay}>
-
-                                {messages.length !== 0 ? messages.map((item, index) => {
-
-                                    console.log(messages)
-                                    return (
-                                        <div style={{ marginBottom: "20px" }} key={index}>
-                                            <p style={{ fontWeight: "bold" }}>{item.sender}</p>
-                                            <p>{item.data}</p>
-                                        </div>
-                                    )
-                                }) : <p>No Messages Yet</p>}
-
-
+                                {messages.length !== 0 ? messages.map((item, index) => (
+                                    <div className={`${styles.message} ${item.sender === username ? styles.self : styles.other}`} key={index}>
+                                        <p className={styles.senderName}>{item.sender}</p>
+                                        <div className={styles.messageData}>{item.data}</div>
+                                    </div>
+                                )) : <div className={styles.noMessages}>Be the first to say hello!</div>}
+                                <div ref={messagesEndRef} />
                             </div>
 
                             <div className={styles.chattingArea}>
-                                <TextField value={message} onChange={(e) => setMessage(e.target.value)} id="outlined-basic" label="Enter Your chat" variant="outlined" />
-                                <Button variant='contained' onClick={sendMessage}>Send</Button>
+                                <TextField
+                                    className={styles.chatInput}
+                                    value={message}
+                                    onChange={(e) => setMessage(e.target.value)}
+                                    placeholder="Click here to type..."
+                                    variant="standard"
+                                    fullWidth
+                                    InputProps={{
+                                        disableUnderline: true,
+                                        style: { color: 'white', padding: '0 5px' }
+                                    }}
+                                />
+                                <Button className={styles.sendButton} variant='contained' onClick={sendMessage}>
+                                    Send
+                                </Button>
                             </div>
-
-
                         </div>
                     </div> : <></>}
 

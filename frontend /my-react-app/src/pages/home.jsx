@@ -4,15 +4,21 @@ import RestoreIcon from "@mui/icons-material/Restore";
 import { Button, IconButton, TextField } from "@mui/material";
 import styles from "./home.module.css";
 import withAuth from "../utils/Auth";
+import { AuthContext } from "../contexts/AuthContext";
 
 function Home() {
 
     let navigate = useNavigate();
     const [meetingCode, setMeetingCode] = useState("");
 
+    const { addToUserHistory } = useContext(AuthContext);
+
     let handleJoinVideoCall = async () => {
+
+        await addToUserHistory(meetingCode);
+
         if (meetingCode.trim().length > 0) {
-            navigate(`/video-meeting/${meetingCode}`)
+            navigate(`/${meetingCode}`)
         }
     }
 

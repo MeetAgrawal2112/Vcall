@@ -1,7 +1,7 @@
 import { User } from "../models/user.model.js";
 import bcrypt from "bcrypt";
 import crypto from "crypto";
-
+import { Meeting } from "../models/meeting.model.js";
 const register = async (req, res) => {
     console.log("Registering user:", req.body);
     try {
@@ -61,4 +61,35 @@ const login = async (req, res) => {
 }
 
 
-export { register, login }
+const getUserHistory = async (req, res) => {
+    const {token}=req.query;
+    try{
+        const user=await User.findOne({token:token});
+        const meetings=await Meeting.find({user_id:user.username});
+        res.json(meetings)
+    }
+    catch(error){
+        console.log("Error fetching user history:", error);
+        return res.status(500).json({ message: "Internal server error" })
+    }
+}
+
+const addToUserHistory=async(req,res)=>{
+    const {token,meeting_code}=req.body;
+    try{
+        const user=await User.findOne({token:token});
+        const newMeeting=new Meeting({
+            user_id:user.username,
+            meeting_code:meeting_code
+        })
+        await newMeeting.save();
+        res.json({message:"Meeting added to history"})
+    }
+    catch(error){
+        console.log("Error adding meeting to history:", error);
+        return res.status(500).json({ message: "Internal server error" })
+    }
+}
+
+
+export { register, login,addToUserHistory,getUserHistory }

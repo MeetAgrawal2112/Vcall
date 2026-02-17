@@ -52,13 +52,13 @@ export const AuthProvider = ({ children }) => {
             });
             return request.data
         } catch
-         (err) {
+        (err) {
             throw err;
         }
     }
 
 
-     const addToUserHistory = async (meetingCode) => {
+    const addToUserHistory = async (meetingCode) => {
         try {
             let request = await client.post("/add_to_activity", {
                 token: localStorage.getItem("token"),
@@ -75,6 +75,8 @@ export const AuthProvider = ({ children }) => {
         setUserData,
         handleRegister,
         handleLogin,
+        getHistoryOfUser,
+        addToUserHistory,
         router
     };
 
